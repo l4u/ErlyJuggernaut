@@ -1,0 +1,16 @@
+{application, erly_juggernaut, [
+	{description, "Juggernaut implementated in Erlang"},
+	{vsn, "0.0.1"},
+	{modules, []},
+	{registered, [erly_juggernaut_sup]},
+	{applications, [
+		kernel,
+		stdlib,
+		crypto,
+		public_key,
+		ssl,
+		cowboy
+	]},
+	{mod, {erly_juggernaut, []}},
+	{env, []}
+]}.
