@@ -18,10 +18,10 @@
       (_base2 = this.options).port || (_base2.port = 8081);
       this.handlers = {};
       this.meta = this.options.meta;
+      this.disconnect_count = 0;
       this.bullet = $.bullet("ws://" + this.options.host + ":" + this.options.port + "/websocket");
       this.bullet.onopen = this.onconnect;
-      this.bullet.onclose = this.ondisconnect;
-      this.bullet.onclose = this.ondisconnect;
+      this.bullet.ondisconnect = this.ondisconnect;
       this.bullet.onmessage = this.onmessage;
       this.bullet.onheartbeat = __bind(function() {
         return this.bullet.send("ping");
@@ -42,10 +42,14 @@
       return _results;
     };
     ErlyJuggernaut.prototype.onconnect = function() {
+      this.disconnect_count = 0;
       return this.trigger("connect");
     };
     ErlyJuggernaut.prototype.ondisconnect = function() {
-      return this.trigger("disconnect");
+      if (this.disconnect_count === 0) {
+        this.disconnect_count++;
+        return this.trigger("disconnect");
+      }
     };
     ErlyJuggernaut.prototype.onmessage = function(data) {
       var message;

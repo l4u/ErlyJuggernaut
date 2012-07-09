@@ -7,13 +7,15 @@ class ErlyJuggernaut
     @handlers = {}
     @meta = @options.meta
 
+    @disconnect_count = 0
+
     @bullet = $.bullet("ws://#{@options.host}:#{@options.port}/websocket")
     # TODO configureable path
     # TODO configureable protocol
     
     @bullet.onopen = @onconnect
-    @bullet.onclose = @ondisconnect
-    @bullet.onclose = @ondisconnect
+    #@bullet.onclose = @ondisconnect
+    @bullet.ondisconnect = @ondisconnect
     @bullet.onmessage = @onmessage
     @bullet.onheartbeat = =>
       @bullet.send "ping"
@@ -27,10 +29,13 @@ class ErlyJuggernaut
 
   onconnect:  () => 
     # TODO store session id? ref juggernaut/application.js line 3310
+    @disconnect_count = 0
     @trigger("connect")
 
   ondisconnect:  () => 
-    @trigger("disconnect")
+    if @disconnect_count == 0
+      @disconnect_count++
+      @trigger("disconnect")
 
   onmessage: (data) =>
     message = JSON.parse(data.data)
