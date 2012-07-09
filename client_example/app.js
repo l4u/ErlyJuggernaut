@@ -16,6 +16,7 @@
       });
     });
     return jug.on("disconnect", function() {
+      jug.unbind("channel1:data");
       return log("Disconnected");
     });
     /* TODO add reconnect

@@ -15,6 +15,7 @@ $(document).ready ->
       log "Got data: #{data}"
 
   jug.on "disconnect", () ->
+    jug.unbind "channel2:data"
     log "Disconnected"
 
   ### TODO add reconnect
