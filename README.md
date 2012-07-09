@@ -52,3 +52,6 @@ Juggernaut.publish(["channel1", "channel2"], ["foo", "bar"])
 
 For publishing from other clients, please refer to the [Juggernaut page](http://github.com/maccman/juggernaut)
 
+## TODO
+
+* Add a subscription queue so that we don't need to unbind and rebind the handlers when there is a connection lost
