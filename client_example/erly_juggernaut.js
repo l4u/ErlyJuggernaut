@@ -19,6 +19,7 @@
       this.handlers = {};
       this.meta = this.options.meta;
       this.disconnect_count = 0;
+      this.initialized = false;
       this.bullet = $.bullet("ws://" + this.options.host + ":" + this.options.port + "/websocket");
       this.bullet.onopen = this.onconnect;
       this.bullet.ondisconnect = this.ondisconnect;
@@ -43,7 +44,12 @@
     };
     ErlyJuggernaut.prototype.onconnect = function() {
       this.disconnect_count = 0;
-      return this.trigger("connect");
+      if (this.initialized === false) {
+        this.initialized = true;
+        return this.trigger("connect");
+      } else {
+        return this.trigger("connect");
+      }
     };
     ErlyJuggernaut.prototype.ondisconnect = function() {
       if (this.disconnect_count === 0) {

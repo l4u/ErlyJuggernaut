@@ -8,6 +8,7 @@ class ErlyJuggernaut
     @meta = @options.meta
 
     @disconnect_count = 0
+    @initialized = false
 
     @bullet = $.bullet("ws://#{@options.host}:#{@options.port}/websocket")
     # TODO configureable path
@@ -30,7 +31,12 @@ class ErlyJuggernaut
   onconnect:  () => 
     # TODO store session id? ref juggernaut/application.js line 3310
     @disconnect_count = 0
-    @trigger("connect")
+    if @initialized == false
+      @initialized = true
+      @trigger("connect")
+    else
+      # TODO trigger reconnected?
+      @trigger("connect")
 
   ondisconnect:  () => 
     if @disconnect_count == 0
